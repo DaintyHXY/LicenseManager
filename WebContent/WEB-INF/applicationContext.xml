@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd">
+                           
+       <!-- <context:component-scan base-package="dao"/> -->
+       
+       <tx:annotation-driven transaction-manager="transactionManager"/>
+       
+       <!-- 配置数据源 -->
+       <bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+             <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+             <property name="url" value="jdbc:mysql://localhost:3306/LicenseManager?useUnicode=true&amp;characterEncoding=utf-8"></property>
+             <property name="username" value="root"></property>
+             <property name="password" value="123456"></property>   
+        
+       </bean>
+       
+       <!-- 配置SessionFactory -->
+       <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+             <property name="dataSource" ref="ds"></property>
+             <property name="hibernateProperties">
+                       <props>
+                           <!-- 指定hibernate的连接方言 -->
+                           <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                           <!-- 是否根据hibernate映射创建数据表 -->
+                           <prop key="hibernate.hbm2ddl.auto">update</prop>
+                           <prop key="hibernate.show_sql">true</prop>
+                           <prop key="hibernate.format-sql">true</prop>
+                           <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</prop>
+                       </props>
+             </property>
+             <!-- 指明与数据库表对应的实体类 -->
+             <property name="annotatedClasses">
+                       <list>
+                             <value>entity.User</value>
+                       </list>
+             </property>
+                       
+       </bean>
+       
+       <!-- 创建一个事务管理器 -->
+       <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+             <property name="sessionFctory" ref="sessionFactory"></property>
+       </bean>
+       
+                                  
+
+
+
+</beans>

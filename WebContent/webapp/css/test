@@ -1,0 +1,8 @@
+@charset="utf-8";
+#background{
+  margin: 0;
+  padding: 0;
+  background-color: red;
+  height: 100%;
+  width: 100%;
+}

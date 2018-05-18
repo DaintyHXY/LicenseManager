@@ -1,0 +1,16 @@
+@charset "UTF-8";
+/*CSS Document*/
+#background{}
+.center-block{
+	width:251.667px;
+}
+#adBut{
+	margin-top:1%;
+}
+#submit{
+	width:50%;
+	margin-left:50%;
+}
+#sign{
+	width:50%
+}
