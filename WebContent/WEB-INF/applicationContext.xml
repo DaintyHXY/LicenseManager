@@ -15,7 +15,20 @@
                            
        <!-- <context:component-scan base-package="dao"/> -->
        
-       <tx:annotation-driven transaction-manager="transactionManager"/>
+       <context:component-scan base-package="entity"/> 
+       <context:component-scan base-package="service"/>
+       <context:component-scan base-package="dao"/>
+       
+       <!-- 报错bean named "userdao" must be of type [..] but was actually of type[com.sun.proxy.$Proxy18]时添加proxy-target-class属性 -->
+       <tx:annotation-driven  transaction-manager="transactionManager" proxy-target-class="true" />
+       
+       <!-- <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+           <property name="location">
+               <value>WEB-INF/hibernate.properties</value>
+           </property>
+       </bean> -->
+       
+       
        
        <!-- 配置数据源 -->
        <bean id="ds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -38,6 +51,7 @@
                            <prop key="hibernate.show_sql">true</prop>
                            <prop key="hibernate.format-sql">true</prop>
                            <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</prop>
+                           <prop key="hibernate.connection.autocommit">true</prop>
                        </props>
              </property>
              <!-- 指明与数据库表对应的实体类 -->
@@ -46,13 +60,17 @@
                              <value>entity.User</value>
                        </list>
              </property>
+             
+             
                        
        </bean>
        
        <!-- 创建一个事务管理器 -->
        <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-             <property name="sessionFctory" ref="sessionFactory"></property>
+             <property name="sessionFactory" ref="sessionFactory"></property>
        </bean>
+       
+      
        
                                   
 

@@ -11,6 +11,9 @@
 
 </head>
 <body class="container-fluid">
+<script src="${pageContext.request.contextPath}/webapp/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/webapp/js/bootstrap.min.js"></script>
+
     <div>
        <div>
           <h3><p class="text-center">注册</p></h3>

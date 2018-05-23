@@ -3,17 +3,24 @@ package dao;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 
-
+@Transactional
 public abstract class BaseDaoImpl<T> implements BaseDao<T> {
     
 	private static final Log logger = LogFactory.getLog(BaseDaoImpl.class); 
@@ -41,17 +48,20 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
 	}
 	
 	//取得当前的Session
+	@Transactional
 	public Session getSession(){
 		return sessionFactory.getCurrentSession();
 	}
 	
 	
 	//新增对象
+	@Transactional
 	@Override
 	public void save(T entity) {
 		if(entity == null)
 			logger.error("entity = null");
 		else {
+			logger.info("save called");
 			getSession().save(entity);
 			logger.debug(entity);
 		}
@@ -157,5 +167,22 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	//按属性条件查询
+	public T findByUnique(T entity, String property,String value){
+		
+		String hql ="from "+entity.getClass().getSimpleName()+" where "+property+"=?";
+		logger.info(hql);
+		Query query = getSession().createQuery(hql);
+		query.setParameter(0, value);
+		T selectT = (T) query.getSingleResult();
+		return selectT;
+		
+	} 
+	
+	//得到query对象
+//	public Query getQuery(final T entity,String property){
+//		return getSession().createQuery("from"+ entity +" where property=?");
+//	}
 
 }

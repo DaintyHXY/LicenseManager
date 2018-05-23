@@ -24,6 +24,9 @@
 
 </head>
 <body class="container-fluid">
+
+<script src="${pageContext.request.contextPath}/webapp/js/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/webapp/js/bootstrap.min.js"></script>
     <div id="background" >
         
         <div id="bacTop">
@@ -71,7 +74,7 @@
  
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script> -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     
   </body>

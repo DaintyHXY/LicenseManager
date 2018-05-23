@@ -5,6 +5,26 @@ xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
                     http://xmlns.jcp.org/xml/ns/javaee/web-app.xsd">
   <display-name>LicenseManage</display-name>
   
+  <!-- 语言过滤，防止中文乱码 -->
+  <filter>
+      <filter-name>CharacterEncodingFilter</filter-name>
+      <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+      <init-param>
+          <param-name>encoding</param-name>
+          <param-value>utf-8</param-value>
+      </init-param>
+      <init-param>
+           <param-name>forceEncoding</param-name>
+           <param-value>true</param-value>
+      </init-param>
+  </filter>
+  <filter-mapping>
+      <filter-name>CharacterEncodingFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  
+  
   <context-param>
       <param-name>contextConfigLocation</param-name>
       <param-value>WEB-INF/applicationContext*.xml</param-value> 
@@ -42,4 +62,12 @@ xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
      <url-pattern>/</url-pattern>
   </servlet-mapping>
   
+  <filter>
+      <filter-name>SpringOpenSessionInViewFilter</filter-name>
+      <filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
+  </filter>
+  <filter-mapping>
+      <filter-name>SpringOpenSessionInViewFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>

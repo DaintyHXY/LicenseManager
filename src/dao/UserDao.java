@@ -1,19 +1,17 @@
 package dao;
-
-import java.util.List;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import entity.User;
 
-public interface UserDao {
-	
-	public User getUser(String id);
-	
-	public List<User> getAllUser();
-	
-	public void addUser(User user);
-	
-	public boolean delUser(String id);
-	
-	public boolean updateUser(User user);
+@Transactional
+@Repository
+public class UserDao extends BaseDaoImpl<User>{
+
+	@Override
+	protected Class<User> getEntityClass() {
+		
+		return User.class;
+	}
 
 }
