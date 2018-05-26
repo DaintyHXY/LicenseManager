@@ -37,6 +37,11 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
 //		this.cls = entityClass;
 //	}
 	
+	//持久化对象
+	//protected T get(PK pk){}
+	
+	
+	
 	//取得sessionFactory
 	public SessionFactory getSessionFactory(){
 		return sessionFactory;
@@ -140,7 +145,19 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
 	//获取全部对象
 	@Override
 	public List<T> findAll() {
-		return find();
+		//return find();
+		
+		String hql = "from "+getEntityClass().getSimpleName();
+		Query query = getSession().createQuery(hql);
+		
+		List<T> t = query.getResultList();
+		if(t.isEmpty())
+			return null;
+		else {
+			logger.info(t.get(0));
+			return t;
+			}
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -168,15 +185,21 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
 		return 0;
 	}
 	
+	
+	
 	//按属性条件查询
-	public T findByUnique(T entity, String property,String value){
+	public T findByUnique(String property,Object value){
 		
-		String hql ="from "+entity.getClass().getSimpleName()+" where "+property+"=?";
+		//String hql ="from "+entity.getClass().getSimpleName()+" where "+property+"=?";
+		String hql ="from "+getEntityClass().getSimpleName()+" where "+property+"=?";
 		logger.info(hql);
 		Query query = getSession().createQuery(hql);
 		query.setParameter(0, value);
-		T selectT = (T) query.getSingleResult();
-		return selectT;
+		
+		List list = query.getResultList();
+		if(list.size()>0)
+			return (T)list.get(0);
+		else return null;
 		
 	} 
 	
@@ -184,5 +207,16 @@ public abstract class BaseDaoImpl<T> implements BaseDao<T> {
 //	public Query getQuery(final T entity,String property){
 //		return getSession().createQuery("from"+ entity +" where property=?");
 //	}
-
+    
+	//按属性查找列表
+	public List<T> findByProperty(String property,Object value){
+		String hql ="from "+getEntityClass().getSimpleName()+" where "+property+"=?";
+		logger.info(hql);
+		Query query = getSession().createQuery(hql);
+		query.setParameter(0, value);
+		
+		List<T> list = query.getResultList();
+        
+		return list;
+	}
 }

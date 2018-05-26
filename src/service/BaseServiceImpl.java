@@ -78,8 +78,12 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 	}
 	
 	//按属性查找对象
-	public T findByUnique(T entity, String property,String value){
-		return baseDao.findByUnique(entity, property, value);
+	public T findByUnique( String property,Object value){
+		return baseDao.findByUnique( property, value);
+	}
+	
+	public List<T> findByProperty(String property,Object value){
+		return baseDao.findByProperty(property, value);
 	}
 	
 }

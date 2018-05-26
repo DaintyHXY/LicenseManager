@@ -7,7 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -15,6 +18,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import entity.User;
 import service.UserService;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.*;
 
 import javax.servlet.http.HttpSession;
@@ -23,7 +29,7 @@ import java.io.IOException;
 
 
 @Controller
-@SessionAttributes("user")
+@SessionAttributes({"user","msg"})
 public class UserController  {	
 	
 	@Autowired
@@ -46,35 +52,53 @@ public class UserController  {
 	}
 	//登录判定
 	//目前还没做的：1.与数据库连接，判定是否是用户 2.成功登录保持状态跳转
-	@RequestMapping(value="/LoginAndSign")
-	public String loginAndSign(User user,String action,Model model )throws Exception{
-		if(action.equals("login")){
+	//5.24更新：
+	@RequestMapping(value="/toLogin")
+	@ResponseBody
+	public  Map<String,Object> login(@RequestBody User user ,Model model )throws Exception{
+		     
 			logger.info("login called");
 			logger.info(user.getName());
 			logger.info(user.getPwd());
 			ModelAndView mv = new ModelAndView();
 			
-			User searchUser = userservice.findByUnique(user, "name", user.getName());
-
-			if(searchUser.getPwd().equals(user.getPwd())){
+			Map<String,Object> map = new  HashMap<String,Object>();
+			
+			User searchUser = userservice.findByUnique("name", user.getName());
+            //map.put("name", searchUser.getName());
+			if(searchUser == null){
+            	model.addAttribute("msg", "用户不存在");
+            	map.put("msg", "用户不存在");
+            	return map;}
+			
+            else if(searchUser.getPwd().equals(user.getPwd())){
+            	
+            	
 				logger.info("login success");
 				
 				//model.addFlashAttribute("msg", searchUser.getName());
 				model.addAttribute("user", searchUser);
-				
-				
-				return "redirect:/toHome";
+				map.put("msg", searchUser.getName());
+				return map;
 			}
+            else {
+            	model.addAttribute("msg", "未知错误");
+            	map.put("msg", "未知错误");
+            	return map;
+            	}
 		
 			
-			return "register";
 			
-		}
-		else if(action.equals("sign")){
-			logger.info("sign called");
-			return "register";
-		}
-		return null;
+			
+		
+//		else if(action.equals("sign")){
+//			logger.info("sign called");
+//			return null;
+//		}
+//		
+//		logger.info("未知错误");
+//		result="sorry";
+//		return null;
 	}
 
 //	private ModelAndView login(User user) {
@@ -83,7 +107,7 @@ public class UserController  {
 //	}
 	
 	@RequestMapping(value="/register")
-	public ModelAndView register(User user,String action,Model model) throws Exception{
+	public String register(User user,String action,Model model) throws Exception{
 		
 		logger.info("do register");
 		logger.info(user.getName());
@@ -94,7 +118,7 @@ public class UserController  {
 		userservice.save(a);
 		model.addAttribute("user", a);
 		
-		return new ModelAndView("main");
+		return "redirect:/main";
 	}
 	
 	@RequestMapping(value="/main")
@@ -108,5 +132,15 @@ public class UserController  {
 		logger.info(session.getAttribute("user"));
 		//model.addAttribute("msg",msg);
 		return "main";
+	}
+	
+	@RequestMapping("/wrong")
+	@ResponseBody
+	public Model wrongSolve(Model model){
+		
+		logger.info("wrong called");
+		
+		return model;
+		
 	}
 }

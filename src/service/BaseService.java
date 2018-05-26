@@ -32,6 +32,9 @@ public interface BaseService<T> {
 	//获取全部对象
 	public List<T> findAll();
 	
+	//按属性获取列表
+	public List<T> findByProperty(String property,Object value);
+	
 	
 
 }

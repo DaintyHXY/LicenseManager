@@ -36,6 +36,10 @@ public interface BaseDao<T> {
 	public int countAll();
 	
 	//按属性查找对象
-	public T findByUnique(T entity, String property,String value);
+	//public T findByUnique(T entity, String property,String value);
+	public T findByUnique(String property,Object value);
+	
+	//按属性查找列表
+	public List<T> findByProperty(String property,Object value);
 
 }

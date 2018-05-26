@@ -34,6 +34,10 @@ public class License {
 		return licenseId;
 	}
 	
+	public void setLicenseId(Integer licenseId){
+		this.licenseId = licenseId;
+	}
+	
 	public String getLicenseName(){
 		return licenseName;
 	}

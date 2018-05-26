@@ -42,6 +42,7 @@
        <!-- 配置SessionFactory -->
        <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
              <property name="dataSource" ref="ds"></property>
+             <property name="packagesToScan" value="entity"></property>
              <property name="hibernateProperties">
                        <props>
                            <!-- 指定hibernate的连接方言 -->
@@ -55,11 +56,7 @@
                        </props>
              </property>
              <!-- 指明与数据库表对应的实体类 -->
-             <property name="annotatedClasses">
-                       <list>
-                             <value>entity.User</value>
-                       </list>
-             </property>
+             
              
              
                        

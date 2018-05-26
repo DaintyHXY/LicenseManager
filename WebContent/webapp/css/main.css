@@ -1,4 +1,13 @@
 @CHARSET "UTF-8";
+
+.noLine{
+	-webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border: 0 !important;
+}
+
 .widthA{
 	width:33%;
 }
+
+

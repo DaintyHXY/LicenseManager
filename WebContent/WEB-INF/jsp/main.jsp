@@ -7,12 +7,38 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/webapp/css/main.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/webapp/css/bootstrap.min.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/webapp/css/bootstrap-datetimepicker.min.css">
 
 </head>
 <body class="container-fluid">
 
 <script src="${pageContext.request.contextPath}/webapp/js/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/webapp/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/webapp/js/bootstrap-datetimepicker.js"></script>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/webapp/js/main.js"></script>
+
+<!-- 申请框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">申请许可证</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row"><div class="col-md-3">申请人：</div><div id="userInfo" value="${user.id}" class="col-md-6">${user.name}</div></div>
+        <div class="row"><div class="col-md-3">申请使用时长：</div><div class="col-md-6"><input id="wantTime" type="text" class="form-controller" placeholder="天数"></div></div>
+        <br>
+        <div class="row"><div class="col-md-3">开始使用时间：</div><div class="col-md-6"><input id="datetimepicker" value="2018-05-26"></div></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button id="applyBtn" type="button" class="btn btn-primary">提交</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- 导航条 -->
 <nav class="navbar navbar-default">
@@ -54,7 +80,7 @@
             <button type="submit" class="btn btn-default">Submit</button>
             
        </form>
-       <div><a href="#">userId: ${user.id}</a></div>
+       <div style="display:block" ><a href="#" >${user.id}</a></div>
        
    </div>
        
@@ -89,53 +115,73 @@
                <div class="panel-heading">
                     <h3 class="panle-title">申请事项</h3>
                </div>
-               <div class="panel-body">
+               <div class="panel-body panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                
                <!-- 标签框 -->
-               <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+               <!-- <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"> -->
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingOne">
       <h4 class="panel-title">
-        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <a id="hasApply" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
           已申请
         </a>
       </h4>
     </div>
     <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-      <div class="panel-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
+      
+         <ul id="hasApplyGroup" class="list-group">
+             <!-- <li class="list-group-item">license1</li>
+             <li class="list-group-item">license1</li>
+             <li class="list-group-item">license1</li>
+             <li class="list-group-item">license1</li> -->
+         </ul>
+         
+      
     </div>
   </div>
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingTwo">
       <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        <a id="canApply" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
           可申请
         </a>
       </h4>
     </div>
     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-      <div class="panel-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
+      
+           
+           <ul id="canApplyGroup" class="list-group">
+             <!-- <li class="list-group-item">license1</li>
+             <li class="list-group-item">license1</li>
+             <li class="list-group-item">license1</li>
+             <li class="list-group-item">license1</li> -->
+         </ul>
+        
+      
     </div>
   </div>
   <div class="panel panel-default">
     <div class="panel-heading" role="tab" id="headingThree">
       <h4 class="panel-title">
-        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        <a id="applyHistory" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
           申请历史
         </a>
       </h4>
     </div>
     <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-      <div class="panel-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
+      
+        
+        <ul id="applyHistoryGroup" class="list-group">
+             <!-- <li class="list-group-item">license1</li>
+             <li class="list-group-item">license1</li>
+             <li class="list-group-item">license1</li>
+             <li class="list-group-item">license1</li> -->
+         </ul>
+         
+      
     </div>
   </div>
-</div>
+<!-- </div> -->
                
                </div>
           </div> 
@@ -143,9 +189,9 @@
        <div class="col-md-4">
           <div class="panel panel-default">
                <div class="panel-heading">
-                    <h3 class="panle-title">title</h3>
+                    <h3 class="panle-title">信息栏</h3>
                </div>
-               <div class="panel-body">content</div>
+               <div class="panel-body" id="infoContent"></div>
           </div> 
       </div>
 </div>
