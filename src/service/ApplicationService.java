@@ -19,5 +19,10 @@ public class ApplicationService extends BaseServiceImpl<Application> {
 		
 		return Application.class;
 	}
+	
+	 public int countPriority(int userPriority,int applyTime){
+	        
+			return applicationDao.countPriority(userPriority, applyTime);
+		}
 
 }

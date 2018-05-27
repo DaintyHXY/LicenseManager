@@ -23,6 +23,18 @@ public class User {
 	@Column
 	private String pwd;
 	
+	//用户申请次数
+	@Column
+	private Integer applicationNum;
+	
+	//申请失败次数
+	@Column
+	private Integer applicationFail;
+	
+	//用户优先级
+	@Column
+	private Integer userPriority;
+	
 	public User(){}
 	public User(String name,String pwd){
 		this.name = name;
@@ -52,5 +64,25 @@ public class User {
 	public void setPwd(String pwd){
 		this.pwd = pwd;
 	}
+	
+	public Integer getUserPriority(){
+		return userPriority;
+	}
+	public void setUserPriority(int userPriority){
+		this.userPriority = userPriority;
+	}
+	public Integer getApplicationNum() {
+		return applicationNum;
+	}
+	public void setApplicationNum(Integer applicationNum) {
+		this.applicationNum = applicationNum;
+	}
+	public Integer getApplicationFail() {
+		return applicationFail;
+	}
+	public void setApplicationFail(Integer applicationFail) {
+		this.applicationFail = applicationFail;
+	}
 
+	
 }

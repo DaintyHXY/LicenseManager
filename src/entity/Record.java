@@ -21,11 +21,21 @@ public class Record {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer recordId;
 	
+	//使用开始时间
 	@Column
 	private Date startTime;
 	
-//	@Column
-//	private Integer useTime;
+	//使用时长
+	@Column
+	private Integer useTime;
+	
+	//到期时间
+	@Column
+	private Date endTime;
+	
+	//是否停止使用
+	@Column
+	private boolean isStopUse = false;
 	
 	@ManyToOne(targetEntity=License.class)
 	@JoinColumn(name="license_id")
@@ -54,6 +64,27 @@ public class Record {
 	}
 	public void setStartTime(Date startTime){
 		this.startTime = startTime;
+	}
+	
+	public Integer getUseTime(){
+		return useTime;
+	}
+	public void setUseTime(int useTime){
+		this.useTime = useTime;
+	}
+	
+	public Date getEndTime(){
+		return endTime;
+	}
+	public void setEndTime(Date endTime){
+		this.endTime  = endTime;
+	}
+	
+	public boolean getIsStopUse(){
+		return isStopUse;
+	}
+	public void setIsStopUse(boolean isStopUse){
+		this.isStopUse = isStopUse;
 	}
 	
 	public License getLicense(){

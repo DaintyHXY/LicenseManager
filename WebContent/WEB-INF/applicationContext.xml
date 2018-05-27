@@ -4,6 +4,7 @@
     xmlns:context="http://www.springframework.org/schema/context"
     xmlns:mvc="http://www.springframework.org/schema/mvc"
     xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:task="http://www.springframework.org/schema/task"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd
     http://www.springframework.org/schema/context
@@ -11,16 +12,26 @@
     http://www.springframework.org/schema/mvc
     http://www.springframework.org/schema/mvc/spring-mvc.xsd
     http://www.springframework.org/schema/tx
-    http://www.springframework.org/schema/tx/spring-tx.xsd">
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/task
+    http://www.springframework.org/schema/task/spring-task.xsd">
                            
        <!-- <context:component-scan base-package="dao"/> -->
        
        <context:component-scan base-package="entity"/> 
        <context:component-scan base-package="service"/>
        <context:component-scan base-package="dao"/>
+       <context:component-scan base-package="task"/>
+       
        
        <!-- 报错bean named "userdao" must be of type [..] but was actually of type[com.sun.proxy.$Proxy18]时添加proxy-target-class属性 -->
        <tx:annotation-driven  transaction-manager="transactionManager" proxy-target-class="true" />
+       
+       <!-- 添加执行方法和线程池配置，在xmlns中也要添加相关地址 -->
+      <task:executor id="executor" pool-size="5"/>
+      <task:scheduler id="scheduler" pool-size="10"/>
+      <task:annotation-driven executor="executor" scheduler="scheduler" />
+      
        
        <!-- <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
            <property name="location">

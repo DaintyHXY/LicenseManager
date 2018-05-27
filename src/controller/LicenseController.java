@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import entity.Application;
+import entity.Group;
 import entity.License;
 import entity.Record;
 import entity.User;
 import service.ApplicationService;
+import service.GroupService;
 import service.LicenseService;
 import service.RecordService;
 import service.UserService;
@@ -40,18 +42,22 @@ public class LicenseController {
 	private RecordService recordService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private GroupService groupService;
 	
 	private static final Log logger = LogFactory.getLog(License.class);
 	
+	//获得所有可以申请的许可证组
 	@RequestMapping("/checkAllLicense")
 	@ResponseBody
-	public List<License> checkLicense(Model model){
+	public List<Group> checkLicense(Model model){
 		logger.info("checkLicense called");
-		logger.info(licenseService.findAll().size());
+		logger.info(groupService.findAll().size());
 		
-		return licenseService.findAll();
+		return groupService.findAll();
 	}
 	
+	//获得已经提交申请的许可证信息
 	@RequestMapping("/checkApplyingLicense")
 	@ResponseBody
 	public List<Application> applyingLicense(Model model, HttpSession session){
@@ -63,7 +69,8 @@ public class LicenseController {
 		
 		return list;
 	}
-		
+	
+	 //查看所有使用记录
      @RequestMapping("/checkHistoryLicense")
      @ResponseBody
      public List<Record> recordLicense(Model model, HttpSession session){
@@ -76,6 +83,7 @@ public class LicenseController {
     	 return list;
      }
      
+     //查看申请表信息
      @RequestMapping("/checkApplyInfo")
      @ResponseBody
      public Application applyInfo(@RequestParam(value="applyId", required=true) Integer applyId,Model model,HttpSession session){
@@ -87,18 +95,19 @@ public class LicenseController {
     	 
      }
 		
-     
+     //查看所有可以申请的组的具体信息
      @RequestMapping("/checkCanApplyInfo")
      @ResponseBody
-     public License canApplyInfo(@RequestParam(value="licenseId", required=true) Integer licenseId,Model model,HttpSession session){
+     public Group canApplyInfo(@RequestParam(value="groupId", required=true) Integer groupId,Model model,HttpSession session){
     	 
     	 logger.info("checkApplyInfoCalled");
-    	 logger.info(licenseId);
+    	 logger.info(groupId);
     	 
-    	return licenseService.findByUnique("licenseId",licenseId);
+    	return groupService.findByUnique("groupId",groupId);
     	 
      }
-		
+	
+     //查看记录的具体信息
      @RequestMapping("/checkHistoryApplyInfo")
      @ResponseBody
      public Record historyApplyInfo(@RequestParam(value="recordId", required=true) Integer recordId,Model model,HttpSession session){
@@ -110,23 +119,39 @@ public class LicenseController {
     	 
      }
      
+     //申请表
      @RequestMapping("/applyLicense")
      @ResponseBody
-     public Map<String,Object> applyLicense(Integer license_id,Integer user_id,Integer wantTime,Date startTime,  Model model){
+     public Map<String,Object> applyLicense(Integer group_id,Integer user_id,Integer wantTime,Date startTime,  Model model){
     	 
     	 Map<String,Object> map = new HashMap<String,Object>();
     	 logger.info(user_id);
-    	 logger.info(license_id);
+    	 logger.info(group_id);
     	 Application application = new Application();
     	 application.setWantTime(wantTime);
     	 application.setStartTime(startTime);
     	 
-    	 License license = licenseService.findByUnique("licenseId", license_id);
+    	 
+    	 Group group = groupService.findByUnique("groupId", group_id);
     	 User user = userService.findByUnique("id", user_id);
-    	 if(license!=null&user!=null){
-    		 application.setLicense(license);
+    	 if(group!=null&user!=null){
+    		 application.setGroup(group);
              application.setUser(user);
+             
+             
+             //更新用户申请次数
+             user.setApplicationNum(user.getApplicationNum()+1);
+             
+             //更新用户优先级
+             int priority = userService.countPriority(user.getApplicationNum(), user.getApplicationFail());
+             user.setUserPriority(priority);
+             userService.update(user);
+             
+             //更新申请表排序优先级
+             int order = applicationService.countPriority(user.getUserPriority(), application.getApplyTime());
+             application.setOrderPriority(order);
              applicationService.save(application);
+             
              map.put("msg", "success");
     	 }
     	 

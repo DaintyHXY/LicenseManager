@@ -19,5 +19,10 @@ public class UserService extends BaseServiceImpl<User> {
 		// TODO Auto-generated method stub
 		return User.class;
 	}
+	
+	public int countPriority(int ApplicationNum,int ApplicationFail){
+		
+		return userdao.countPriority(ApplicationNum, ApplicationFail);
+	}
 
 }

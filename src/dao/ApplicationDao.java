@@ -14,5 +14,12 @@ public class ApplicationDao extends BaseDaoImpl<Application> {
 		
 		return Application.class;
 	}
+	
+    public int countPriority(int userPriority,int applyTime){
+        
+		int priority =  (int) (userPriority*0.6+applyTime*0.4);
+		System.out.println("用户优先级： "+userPriority+"----申请时间： "+applyTime+"-----优先级: "+priority);
+        return priority;
+	}
 
 }

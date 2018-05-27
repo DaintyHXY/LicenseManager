@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.Date;
+import java.util.Collections;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,10 +45,13 @@ public class Application {
 	@Column
 	private boolean isStopApply = false;
 	
+	//排序优先级
+	private Integer orderPriority=0;
+	
 	//外键许可证ID
-	@ManyToOne(targetEntity=License.class)
-	@JoinColumn(name="license_id")
-	private License license;
+	@ManyToOne(targetEntity=Group.class)
+	@JoinColumn(name="group_id")
+	private Group group;
 	
 	//外键用户ID
 	@ManyToOne(targetEntity=User.class)
@@ -58,10 +62,10 @@ public class Application {
 	public Application(){
 		
 	}
-	public Application(Integer wantTime,Date startTime, License license, User user){
+	public Application(Integer wantTime,Date startTime, Group group, User user){
 		this.wantTime = wantTime;
 		this.startTime = startTime;
-		this.license = license;
+		this.group = group;
 		this.user = user;
 	}
 	
@@ -115,17 +119,26 @@ public class Application {
 		this.isStopApply = isStopApply;
 	}
 
-	public License getLicense(){
-		return license;
-	}
-	public void setLicense(License license){
-		this.license = license;
-	}
 	
+	public Group getGroup() {
+		return group;
+	}
+	public void setGroup(Group group) {
+		this.group = group;
+	}
 	public User getUser(){
 		return user;
 	}
 	public void setUser(User user){
 		this.user = user;
 	}
+	
+	public Integer getOrderPriority() {
+		return orderPriority;
+	}
+	public void setOrderPriority(Integer orderPriority) {
+		this.orderPriority = orderPriority;
+	}
+	
+	
 }

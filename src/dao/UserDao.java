@@ -13,5 +13,11 @@ public class UserDao extends BaseDaoImpl<User>{
 		
 		return User.class;
 	}
+	
+    public int countPriority(int ApplicationNum,int ApplicationFail){
+        
+		int priority =  (int) (ApplicationNum*0.6+ApplicationFail*0.4);
+        return priority;
+	}
 
 }
