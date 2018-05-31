@@ -10,4 +10,17 @@
 	width:33%;
 }
 
+#daoHang{
+	background-color:#22958c;
+}
 
+.a:focus{text-decoration:none !important;}
+
+.panel-heading{
+	background-color:#acae86 !important ;
+	border-color: #acae86 !important;
+	color:#fff !important;
+}
+.navbar-nav{
+	color:#fff !important;
+}

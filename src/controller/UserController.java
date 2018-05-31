@@ -107,18 +107,29 @@ public class UserController  {
 //	}
 	
 	@RequestMapping(value="/register")
-	public String register(User user,String action,Model model) throws Exception{
+	@ResponseBody
+	public Map<String,Object> register(@RequestParam(value="signName",required=true)String name,
+			                           @RequestParam(value="signPwd",required=true)String pwd,Model model) throws Exception{
+		
+		Map<String,Object> map = new HashMap<String,Object>();
 		
 		logger.info("do register");
-		logger.info(user.getName());
-		logger.info(user.getPwd());
-		User a = new User();
-		a.setName(user.getName());
-		a.setPwd(user.getPwd());
-		userservice.save(a);
-		model.addAttribute("user", a);
+		logger.info(name);
+		logger.info(pwd);
 		
-		return "redirect:/main";
+		User a = new User();
+		if(!name.equals(null)&&!pwd.equals(null)){
+			
+		    a.setName(name);
+		    a.setPwd(pwd);
+		    userservice.save(a);
+		    model.addAttribute("user", a);
+		    map.put("msg", "success");
+		
+		}
+		else map.put("msg", "²»ÄÜÎª¿Õ");
+		
+		return map;
 	}
 	
 	@RequestMapping(value="/main")

@@ -161,6 +161,35 @@ public class LicenseController {
     	 
     	 return map;
      }
+     
+     //取消申请
+     @RequestMapping("/deleteApplyLicense")
+     @ResponseBody
+     public Map<String,Object> deleteApply(@RequestParam(value="applicationId",required=true) Integer applicationId){
+    	 Map<String,Object> map = new HashMap<String,Object>();
+    	 
+    	Application application = applicationService.findByUnique("applicationId", applicationId);
+    	if(application==null)
+    		map.put("msg", "取消失败!");
+    	
+    	else {
+    		
+    		//更新优先级,减去一次次数
+    		int num = application.getUser().getApplicationNum();
+    		num = num-1;
+    		application.getUser().setApplicationNum(num);
+    		userService.update(application.getUser());
+    		
+    		
+    		applicationService.delete(application);
+    		
+    		map.put("msg", "success");
+    	}
+    	 
+    	 return map;
+     }
+     
+     
 		
 	}
 

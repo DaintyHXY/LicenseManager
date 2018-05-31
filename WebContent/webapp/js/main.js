@@ -10,8 +10,9 @@ $(function (){
 			data:{},
 			success:function (data){
 				//var list = data.result;
+				$(".applyInfo").remove()
 				for(i=0;i<data.length;i++){
-					var Li = '<li class="list-group-item"><a  class="applyInfo" type="button" value="'+data[i].applicationId+'" >'+data[i].group.groupName+'</a></li>';
+					var Li = '<a  class="applyInfo list-group-item" type="button" value="'+data[i].applicationId+'" >'+(i+1)+": "+data[i].group.groupName+'</a>';
 					$('#hasApplyGroup').append(Li);
 				}
 			},
@@ -23,6 +24,7 @@ $(function (){
 	});
 	
 });
+
 
 
 //可申请列表
@@ -38,7 +40,7 @@ $(function (){
 			success:function (data){
 				//var list = data.result;
 				for(i=0;i<data.length;i++){
-					var Li = '<li class="list-group-item"><a  class="canApplyInfo" type="button" value="'+data[i].groupId+'">'+data[i].groupName+'</a></li>';
+					var Li = '<a  class="canApplyInfo list-group-item" type="button" value="'+data[i].groupId+'">'+(i+1)+': '+data[i].groupName+'</a>';
 					$('#canApplyGroup').append(Li);
 				}
 			},
@@ -68,7 +70,7 @@ $(function (){
 					
 					var date = changeDate(data[i]);
 				    
-					var Li = '<li class="list-group-item"><a class="historyInfo" type="button" value="'+data[i].recordId+'">'+date+'--'+data[i].license.licenseName+'</a></li>';
+					var Li = '<a class="historyInfo list-group-item"  type="button" value="'+data[i].recordId+'">'+date+'--'+data[i].license.licenseName+'</a>';
 					$('#applyHistoryGroup').append(Li);
 				}
 			},
@@ -84,7 +86,7 @@ $(function (){
 //已申请列表信息
 $(function (){
 	
-	$("ul").on("click",".applyInfo",function (){
+	$("div").on("click",".applyInfo",function (){
 		
 		var apply = $(this).attr("value");
 		var applyId = {
@@ -104,7 +106,7 @@ $(function (){
 	                else if(data.isStopApply)
 	                	var msg="已停止";
 	                    else var msg="进行中";
-					var Li = '<div class="infoBox">'+
+					var Li = '<div class="infoBox" id="ingApply">'+
 						     '<li  class="list-group-item"><div><h4>申请使用天数:<h4></div><div>'+data.wantTime+'</div></li>'+
 					         '<li  class="list-group-item"><div><h4>申请提交天数:<h4></div><div>'+data.applyTime+'</div></li>'+
 					         '<li  class="list-group-item"><div><h4>申请情况:<h4></div><div>'+msg+'</div></li>'+
@@ -114,6 +116,10 @@ $(function (){
 					         +'</div>';
 					
 					$('#infoContent').append(Li);
+					if(msg=="进行中"){
+						var btn = '<li  class="list-group-item"><button name="deleteApply" id="deletApplyBtn" type="submit" class="btn btn-lg btn-primary btn-block" data-toggle="modal" data-target="#deletModal" value='+data.applicationId+'>取消申请</button></li>';
+						$('#ingApply').append(btn);
+					}
 				
 			},
 			error:function (data){
@@ -128,7 +134,7 @@ $(function (){
 //可申请证书信息
 $(function (){
 	
-	$("ul").on("click",".canApplyInfo",function (){
+	$("div").on("click",".canApplyInfo",function (){
 		
 		var group = $(this).attr("value");
 		var groupId = {
@@ -169,7 +175,7 @@ $(function (){
 //申请历史信息
 $(function (){
 	
-	$("ul").on("click",".historyInfo",function (){
+	$("div").on("click",".historyInfo",function (){
 		
 		var record = $(this).attr("value");
 		var recordId = {
@@ -250,8 +256,10 @@ $(function(){
 			url:"./license/applyLicense",
 			data: application ,
 			success: function(result){
-				if(result.msg == "success")
+				if(result.msg == "success"){
 					alert("申请成功！");
+				    parent.location.reload();
+				}
 				else alert("申请失败！");
 			},
 			error:function(application){
@@ -263,6 +271,38 @@ $(function(){
 		
 	});
 });
+
+//取消申请
+$(function(){
+	$('div').on("click","#toDeletApply",function(){
+		var valueId = $("#deletApplyBtn").attr("value");
+		var applicationId={
+				"applicationId" : valueId
+		};
+        $.ajax({
+			
+			type:"POST",
+			dataType:"json",
+			//contentType:"application/json",
+			url:"./license/deleteApplyLicense",
+			data: applicationId ,
+			success: function(result){
+				if(result.msg == "success"){
+					alert("删除成功！");
+					$("#deletModal").modal('hide');
+				    parent.location.reload();
+				}
+				else alert("删除失败！");
+			},
+			error:function(application){
+				alert("error");
+			}
+			
+        });
+        return false;
+	});
+});
+
 
 function changeDate(data){
 	var stDate = new Date(data.startTime);

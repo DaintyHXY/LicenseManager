@@ -1,16 +1,43 @@
 @charset "UTF-8";
 /*CSS Document*/
-#background{}
-.center-block{
-	width:251.667px;
+html{
+	height:100%;
+}
+#body{
+	width:100%;
+	height:100%;
+}
+
+.site-wrapper{
+	background-color:black;
+	display: table;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+    box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+}
+#right-block{
+	width:45%;
+	
 }
 #adBut{
-	margin-top:1%;
+	margin-top:2%;
+	
 }
-#submit{
-	width:50%;
-	margin-left:50%;
+
+#signModal{
+	color:#000;
 }
-#sign{
-	width:50%
+
+#backt{
+	height:100%;
+	background-color: #22958c;
+	margin-top:8%;
+	width:100%;
+	color:#fff;
+}
+
+#topText{
+	
 }

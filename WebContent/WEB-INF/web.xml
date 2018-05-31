@@ -6,6 +6,7 @@ xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
   <display-name>LicenseManage</display-name>
   
   <!-- 语言过滤，防止中文乱码 -->
+  <!-- url-pattern应该为/,/*会导致no mapping -->
   <filter>
       <filter-name>CharacterEncodingFilter</filter-name>
       <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -20,7 +21,7 @@ xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
   </filter>
   <filter-mapping>
       <filter-name>CharacterEncodingFilter</filter-name>
-      <url-pattern>/*</url-pattern>
+      <url-pattern>/</url-pattern>
   </filter-mapping>
   
   
@@ -47,6 +48,27 @@ xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
         <servlet-name>default</servlet-name>
         <url-pattern>*.map</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.eot</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.svg</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.ttf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.woff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.woff2</url-pattern>
+    </servlet-mapping>
+    
     
   <servlet>
      <servlet-name>myServlet</servlet-name>
@@ -68,6 +90,6 @@ xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
   </filter>
   <filter-mapping>
       <filter-name>SpringOpenSessionInViewFilter</filter-name>
-      <url-pattern>/*</url-pattern>
+      <url-pattern>/</url-pattern>
   </filter-mapping>
 </web-app>

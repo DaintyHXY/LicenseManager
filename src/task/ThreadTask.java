@@ -55,7 +55,7 @@ public class ThreadTask {
 	
 	//设置已提交申请天数
 	//已完成
-	@Scheduled(cron="0/10 * * * * ?")//每10秒执行一次
+	//@Scheduled(cron="0/10 * * * * ?")//每10秒执行一次
 	public void getApplyTime(){
 		try{
 			TimeUnit.SECONDS.sleep(20);
@@ -93,7 +93,7 @@ public class ThreadTask {
 	//由于group的加入还未完成
 	//5.27Group添加后改善完成，用户优先级还没增加
 	//5.27已添加用户优先级，6：4
-	@Scheduled(cron="0/10 * * * * ?")
+	//@Scheduled(cron="0/10 * * * * ?")
 	public void changeApplyState(){
 		
 		try{

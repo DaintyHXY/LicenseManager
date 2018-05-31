@@ -1,5 +1,8 @@
 package entity;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -22,20 +25,26 @@ public class User {
 	private String name;
 	@Column
 	private String pwd;
+	@Column
+	private String useDate;
 	
 	//用户申请次数
 	@Column
-	private Integer applicationNum;
+	private Integer applicationNum = 0;
 	
 	//申请失败次数
 	@Column
-	private Integer applicationFail;
+	private Integer applicationFail = 0;
 	
 	//用户优先级
 	@Column
-	private Integer userPriority;
+	private Integer userPriority = 0;
 	
-	public User(){}
+	public User() throws ParseException{
+		
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		useDate = sdf.format(new Date());
+	}
 	public User(String name,String pwd){
 		this.name = name;
 		this.pwd = pwd;
@@ -84,5 +93,11 @@ public class User {
 		this.applicationFail = applicationFail;
 	}
 
+	public String getUseDate() {
+		return useDate;
+	}
+	public void setUseDate(String useDate) {
+		this.useDate = useDate;
+	}
 	
 }

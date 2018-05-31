@@ -27,7 +27,7 @@ public class Application {
 	
 	//申请提交天数
 	@Column
-	private Integer applyTime;
+	private Integer applyTime=0;
 	
 	//开始使用的时间
 	@Column
